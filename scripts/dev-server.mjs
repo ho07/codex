@@ -1,0 +1,3 @@
+import http from'node:http';import{createReadStream,existsSync,statSync}from'node:fs';import path from'node:path';
+const root=process.argv[2]||'public';const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml'};
+http.createServer((req,res)=>{let p=decodeURIComponent(req.url.split('?')[0]);if(p==='/')p='/index.html';let file=path.join(root,p);if(!existsSync(file)||statSync(file).isDirectory())file=path.join(root,'index.html');res.setHeader('Content-Type',types[path.extname(file)]||'text/plain');createReadStream(file).pipe(res)}).listen(5173,()=>console.log('RoomLog demo on http://localhost:5173'));
